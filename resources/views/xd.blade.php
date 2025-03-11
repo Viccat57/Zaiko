@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZAIKOL</title>
+    <title>ZAIKO</title>
+    <link rel="icon" type="image/png" href="{{ asset('storage/logoZaiko.png') }}">
     <style>
         .dibujo {
             font-family: monospace;
