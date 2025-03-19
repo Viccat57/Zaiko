@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AlertaController;
 use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\ProveedoresController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -12,5 +13,6 @@ Route::get('/health', function() {
 });
 
 Route::apiResource('users', UserController::class);
+Route::apiResource('proveedores', ProveedoresController::class);
 Route::apiResource('productos', ProductoController::class);
 Route::apiResource('alertas', AlertaController::class);

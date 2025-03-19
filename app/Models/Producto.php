@@ -30,4 +30,9 @@ class Producto extends Model
     {
         return $this->belongsTo(Alerta::class, 'idAlerta');
     }
+
+    public function proveedor()
+    {
+        return $this->belongsTo(Alerta::class, 'idproveedor');
+    }
 }
