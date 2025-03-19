@@ -6,6 +6,11 @@ use App\Http\Controllers\ProveedoresController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VentaController;
+use App\Http\Controllers\DetalleVentaProductoController;
+
+Route::apiResource('ventas', VentaController::class);
+Route::apiResource('detalle-ventas', DetalleVentaProductoController::class);
 
 // Aquí puedes definir tus rutas de API
 Route::get('/health', function() {
