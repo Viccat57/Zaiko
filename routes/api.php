@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\DetalleVentaProductoController;
+use App\Http\Controllers\AuthController;
+
+Route::post('/login', [AuthController::class, 'login']);
+
 
 Route::apiResource('ventas', VentaController::class);
 Route::apiResource('detalle-ventas', DetalleVentaProductoController::class);
