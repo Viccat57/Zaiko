@@ -32,6 +32,7 @@ class AuthController extends Controller
             ], 201);
 
         } catch (ValidationException $e) {
+
             return response()->json([
                 'status' => 'error',
                 'message' => 'Error de validación',
@@ -45,7 +46,6 @@ class AuthController extends Controller
             ], 500);
         }
     }
-
     public function login(Request $request)
     {
         try {
