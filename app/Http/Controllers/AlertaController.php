@@ -26,17 +26,6 @@ class AlertaController extends Controller
         return response()->json($alerta, 201);
     }
 
-    public function show($id)
-    {
-        $alerta = Alerta::find($id);
-
-        if (!$alerta) {
-            return response()->json(['message' => 'Alerta no encontrada'], 404);
-        }
-
-        return response()->json($alerta, 200);
-    }
-
     public function update(Request $request, $id)
     {
         $alerta = Alerta::findOrFail($id);
