@@ -9,30 +9,52 @@ class Producto extends Model
 {
     use HasFactory;
 
-    protected $table = 'productos'; // Nombre de la tabla
-
     protected $fillable = [
         'nombreProducto',
         'descripcion',
         'precio',
         'stock',
-        'idUsuario',
+        'idUsuario',  // Asegúrate que esté aquí
         'idAlerta'
     ];
-
-    // Relaciones con otras tablas
+    
+    // Haz las relaciones opcionales
     public function usuario()
     {
-        return $this->belongsTo(User::class, 'idUsuario');
+        return $this->belongsTo(User::class, 'idUsuario')->withDefault();
     }
-
+    
     public function alerta()
     {
-        return $this->belongsTo(Alerta::class, 'idAlerta');
+        return $this->belongsTo(Alerta::class, 'idAlerta')->withDefault();
     }
-
-    public function proveedor()
+    
+    public function verificarStock()
     {
-        return $this->belongsTo(Alerta::class, 'idproveedor');
+        if ($this->stock < 10) {
+            $this->generarAlerta();
+        } else {
+            // Eliminar alerta si el stock se normaliza
+            if ($this->alerta) {
+                $this->alerta()->delete();
+                $this->idAlerta = null;
+                $this->save();
+            }
+        }
+    }
+    
+    protected function generarAlerta()
+    {
+        // Solo crear alerta si no existe una
+        if (!$this->alerta) {
+            $alerta = Alerta::create([
+                'tipoMensaje' => 'Stock Bajo',
+                'fecha' => now(),
+                'estadoProducto' => 'Stock crítico: ' . $this->stock . ' unidades'
+            ]);
+    
+            $this->idAlerta = $alerta->id;
+            $this->save();
+        }
     }
 }

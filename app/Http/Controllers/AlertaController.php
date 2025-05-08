@@ -9,7 +9,8 @@ class AlertaController extends Controller
 {
     public function index()
     {
-        return response()->json(Alerta::all(), 200);
+        $alertas = Alerta::with('proveedor')->get();
+        return response()->json($alertas);
     }
 
     public function store(Request $request)
@@ -18,10 +19,10 @@ class AlertaController extends Controller
             'tipoMensaje' => 'required|string',
             'fecha' => 'required|date',
             'estadoProducto' => 'required|string',
+            'proveedor_id' => 'required|exists:proveedores,id',
         ]);
 
         $alerta = Alerta::create($request->all());
-
         return response()->json($alerta, 201);
     }
 
@@ -38,28 +39,22 @@ class AlertaController extends Controller
 
     public function update(Request $request, $id)
     {
-        $alerta = Alerta::find($id);
+        $alerta = Alerta::findOrFail($id);
 
-        if (!$alerta) {
-            return response()->json(['message' => 'Alerta no encontrada'], 404);
-        }
+        $request->validate([
+            'tipoMensaje' => 'string',
+            'fecha' => 'date',
+            'estadoProducto' => 'string',
+            'proveedor_id' => 'exists:proveedores,id',
+        ]);
 
         $alerta->update($request->all());
-
-        return response()->json($alerta, 200);
+        return response()->json($alerta);
     }
 
     public function destroy($id)
     {
-        $alerta = Alerta::find($id);
-
-        if (!$alerta) {
-            return response()->json(['message' => 'Alerta no encontrada'], 404);
-        }
-
-        $alerta->delete();
-
-        return response()->json(['message' => 'Alerta eliminada'], 200);
+        Alerta::findOrFail($id)->delete();
+        return response()->json(null, 204);
     }
 }
-
