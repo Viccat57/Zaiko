@@ -12,7 +12,14 @@ use App\Http\Controllers\DetalleVentaProductoController;
 
 
 
-// Aquí puedes definir tus rutas de API
+
+Route::get('/proveedores', [ProveedoresController::class, 'index']);
+Route::get('/alertas', [AlertaController::class, 'index']);
+Route::post('/alertas', [AlertaController::class, 'store']);
+Route::put('/alertas/{id}', [AlertaController::class, 'update']);
+Route::delete('/alertas/{id}', [AlertaController::class, 'destroy']);
+
+
 Route::get('/health', function() {
     return response()->json(['message' => 'API funcionando']);
 });

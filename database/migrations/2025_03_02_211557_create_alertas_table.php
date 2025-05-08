@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('alertas', function (Blueprint $table) {
             $table->id();
-            $table->string('tipoMensaje'); // Columna para el tipo de mensaje (string)
-            $table->dateTime('fecha'); // Columna para la fecha y hora (datetime)
-            $table->string('estadoProducto'); // Columna para el estado del producto (string)
+            $table->string('tipoMensaje'); 
+            $table->dateTime('fecha'); 
+            $table->string('estadoProducto'); 
             $table->timestamps();
         });
     }
