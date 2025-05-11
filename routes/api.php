@@ -13,21 +13,25 @@ use App\Http\Controllers\DetalleVentaProductoController;
 
 
 
-Route::get('/proveedores', [ProveedoresController::class, 'index']);
+
 Route::get('/alertas', [AlertaController::class, 'index']);
 Route::post('/alertas', [AlertaController::class, 'store']);
 Route::put('/alertas/{id}', [AlertaController::class, 'update']);
 Route::delete('/alertas/{id}', [AlertaController::class, 'destroy']);
 
+Route::post('/proveedores', [ProveedoresController::class, 'store']);
+Route::get('/proveedores', [ProveedoresController::class, 'index']);
+Route::put('/proveedores/{id}', [ProveedoresController::class, 'update']);
+Route::delete('/proveedores/{id}', [ProveedoresController::class, 'destroy']);
 
 Route::get('/health', function() {
     return response()->json(['message' => 'API funcionando']);
 });
 
 Route::apiResource('users', UserController::class);
-Route::apiResource('proveedores', ProveedoresController::class);
+
 Route::apiResource('productos', ProductoController::class);
-Route::apiResource('alertas', AlertaController::class);
+
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
