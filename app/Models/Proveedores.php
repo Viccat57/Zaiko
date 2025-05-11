@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Proveedores extends Model
 {
@@ -17,4 +17,8 @@ class Proveedores extends Model
         'telefono',
         'email'
     ];
+    public function alertas(): HasMany
+    {
+        return $this->hasMany(Alerta::class, 'proveedor_id');
+    }
 }

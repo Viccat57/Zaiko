@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('tipoMensaje'); 
             $table->dateTime('fecha'); 
             $table->string('estadoProducto'); 
+            $table->foreignId('proveedor_id')->constrained('proveedores')->onDelete('cascade');
             $table->timestamps();
         });
     }
