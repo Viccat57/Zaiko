@@ -21,6 +21,8 @@ Route::delete('/alertas/{id}', [AlertaController::class, 'destroy']);
 
 Route::post('/proveedores', [ProveedoresController::class, 'store']);
 Route::get('/proveedores', [ProveedoresController::class, 'index']);
+Route::put('/proveedores/{id}', [ProveedoresController::class, 'update']);
+Route::delete('/proveedores/{id}', [ProveedoresController::class, 'destroy']);
 
 Route::get('/health', function() {
     return response()->json(['message' => 'API funcionando']);
