@@ -41,8 +41,13 @@ class UserController extends Controller
     // Actualizar un usuario
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'name' => 'sometimes|string|max:255',
+            'email' => 'sometimes|email|unique:users,email,' . $id // ¡Esta línea es clave!
+        ]);
+
         $user = User::findOrFail($id);
-        $user->update($request->only(['name', 'email']));
+        $user->update($request->all());
 
         return response()->json($user);
     }
