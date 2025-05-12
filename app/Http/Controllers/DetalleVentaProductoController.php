@@ -2,53 +2,57 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DetalleVentaProducto;
 use Illuminate\Http\Request;
+use App\Models\DetalleVenta;
+use App\Models\Producto;
+use Illuminate\Support\Facades\DB;
 
 class DetalleVentaProductoController extends Controller
 {
-    public function index()
+    /**
+     * Obtiene los detalles de una venta específica
+     *
+     * @param  int  $idVenta
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show($idVenta)
     {
-        return response()->json(DetalleVentaProducto::all(), 200);
-    }
+        try {
+            // Obtener los detalles de venta con información del producto
+            $detalles = DB::table('detalle_ventas_producto as dv')
+                ->join('productos as p', 'dv.idProducto', '=', 'p.id')
+                ->where('dv.idVenta', $idVenta)
+                ->select(
+                    'dv.idDetalle',
+                    'dv.idVenta',
+                    'dv.idProducto',
+                    'dv.subtotal',
+                    'dv.created_at',
+                    'dv.updated_at',
+                    'p.nombreProducto',
+                    'p.descripcion',
+                    'p.precio'
+                )
+                ->get();
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'idVenta' => 'required|exists:ventas,idVenta',
-            'idProducto' => 'required|exists:productos,id',
-            'subtotal' => 'required|numeric'
-        ]);
+            if ($detalles->isEmpty()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No se encontraron detalles para esta venta'
+                ], 404);
+            }
 
-        $detalle = DetalleVentaProducto::create($request->all());
+            return response()->json([
+                'success' => true,
+                'detalles' => $detalles
+            ]);
 
-        return response()->json($detalle, 201);
-    }
-
-    public function show($id)
-    {
-        $detalle = DetalleVentaProducto::find($id);
-        if (!$detalle) return response()->json(['message' => 'Detalle no encontrado'], 404);
-
-        return response()->json($detalle, 200);
-    }
-
-    public function update(Request $request, $id)
-    {
-        $detalle = DetalleVentaProducto::find($id);
-        if (!$detalle) return response()->json(['message' => 'Detalle no encontrado'], 404);
-
-        $detalle->update($request->all());
-        return response()->json($detalle, 200);
-    }
-
-    public function destroy($id)
-    {
-        $detalle = DetalleVentaProducto::find($id);
-        if (!$detalle) return response()->json(['message' => 'Detalle no encontrado'], 404);
-
-        $detalle->delete();
-        return response()->json(['message' => 'Detalle eliminado'], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al obtener los detalles de la venta',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }
-
