@@ -8,10 +8,9 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('ventas', function (Blueprint $table) {
-            $table->id('id'); // Clave primaria
+            $table->id('idVenta'); // Clave primaria
             $table->dateTime('fecha');
             $table->decimal('total', 10, 2);
-            $table->foreignId('idProducto')->constrained('productos')->onDelete('cascade');
             $table->foreignId('idUsuario')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
