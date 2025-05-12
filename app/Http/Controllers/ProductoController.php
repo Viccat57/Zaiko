@@ -19,7 +19,7 @@ class ProductoController extends Controller
     {
         try {
             $productos = Producto::with(['alerta', 'usuario'])->get();
-            
+
             return response()->json([
                 'success' => true,
                 'data' => $productos
@@ -117,10 +117,10 @@ class ProductoController extends Controller
 
             // Actualizar datos básicos
             $producto->update($request->only(['nombreProducto', 'descripcion', 'precio', 'stock']));
-            
+
             // Manejo de alertas según stock
             $this->handleStockAlerts($producto);
-            
+
             return $this->successResponse(
                 $producto->fresh(['alerta', 'usuario']),
                 'Producto actualizado exitosamente'
@@ -168,7 +168,7 @@ class ProductoController extends Controller
             $productos = Producto::with(['alerta', 'usuario'])
                             ->where('stock', '<', 10)
                             ->get();
-                            
+
             return $this->successResponse([
                 'data' => $productos,
                 'count' => $productos->count()
@@ -235,6 +235,33 @@ class ProductoController extends Controller
         } elseif ($producto->alerta) {
             $producto->alerta()->delete();
             $producto->update(['idAlerta' => null]);
+        }
+    }
+    public function getMultiple(Request $request)
+    {
+        $ids = explode(',', $request->query('ids'));
+
+        if (empty($ids)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No se proporcionaron IDs de productos'
+            ], 400);
+        }
+
+        try {
+            $productos = Producto::whereIn('id', $ids)->get();
+
+            return response()->json([
+                'success' => true,
+                'productos' => $productos
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al obtener los productos',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 }

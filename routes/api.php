@@ -24,6 +24,25 @@ Route::get('/proveedores', [ProveedoresController::class, 'index']);
 Route::put('/proveedores/{id}', [ProveedoresController::class, 'update']);
 Route::delete('/proveedores/{id}', [ProveedoresController::class, 'destroy']);
 
+// Rutas para Ventas
+Route::get('/ventas', [VentaController::class, 'index']);
+Route::get('/ventas/{id}', [VentaController::class, 'show']);
+Route::post('/ventas', [VentaController::class, 'store']);
+Route::put('/ventas/{id}', [VentaController::class, 'update']);
+Route::delete('/ventas/{id}', [VentaController::class, 'destroy']);
+
+// Rutas adicionales útiles para ventas
+Route::get('/ventas/por-fecha/{fecha}', [VentaController::class, 'ventasPorFecha']);
+Route::get('/ventas/por-usuario/{usuarioId}', [VentaController::class, 'ventasPorUsuario']);
+Route::get('/ventas/por-producto/{productoId}', [VentaController::class, 'ventasPorProducto']);
+Route::get('/ventas/estadisticas/diarias', [VentaController::class, 'estadisticasDiarias']);
+Route::get('/ventas/estadisticas/mensuales', [VentaController::class, 'estadisticasMensuales']);
+
+
+Route::get('/detalle-ventas/{idVenta}', [DetalleVentaProductoController::class, 'show']);
+Route::get('/productos/multiple', [ProductoController::class, 'getMultiple']);
+
+
 Route::get('/health', function() {
     return response()->json(['message' => 'API funcionando']);
 });
