@@ -9,7 +9,7 @@ class AlertaController extends Controller
 {
     public function index()
     {
-        $alertas = Alerta::with('proveedor')->get();
+        $alertas = Alerta::with(['proveedor', 'producto'])->get();
         return response()->json($alertas);
     }
 
@@ -20,6 +20,7 @@ class AlertaController extends Controller
             'fecha' => 'required|date',
             'estadoProducto' => 'required|string',
             'proveedor_id' => 'required|exists:proveedores,id',
+            'producto_id' => 'required|exists:productos,id',
         ]);
 
         $alerta = Alerta::create($request->all());
@@ -35,6 +36,7 @@ class AlertaController extends Controller
             'fecha' => 'date',
             'estadoProducto' => 'string',
             'proveedor_id' => 'exists:proveedores,id',
+            'producto_id' => 'exists:productos,id',
         ]);
 
         $alerta->update($request->all());
