@@ -45,7 +45,6 @@ Route::post('/detalle-ventas', [DetalleVentaProductoController::class, 'store'])
 Route::get('/productos/multiple', [ProductoController::class, 'getMultiple']);
 Route::patch('/productos/{id}/reduce-stock', [ProductoController::class, 'reduceStock']);
 
-
 Route::get('/health', function() {
     return response()->json(['message' => 'API funcionando']);
 });
