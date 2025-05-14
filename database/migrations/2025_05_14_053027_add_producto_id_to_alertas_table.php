@@ -6,23 +6,17 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::table('alertas', function (Blueprint $table) {
-            //
+            $table->foreignId('producto_id')->nullable()->change();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::table('alertas', function (Blueprint $table) {
-            //
+            $table->foreignId('producto_id')->nullable(false)->change();
         });
     }
 };

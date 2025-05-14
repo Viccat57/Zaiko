@@ -17,8 +17,7 @@ return new class extends Migration
             $table->dateTime('fecha'); 
             $table->string('estadoProducto'); 
             $table->foreignId('proveedor_id')->constrained('proveedores')->onDelete('cascade');
-            $table->foreignId('producto_id')->constrained('productos')->onDelete('cascade');
-            $table->timestamps();
+            $table->foreignId('producto_id')->nullable()->constrained('productos')->onDelete('cascade'); 
         });
     }
 

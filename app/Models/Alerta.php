@@ -30,7 +30,8 @@ class Alerta extends Model
             if (!Proveedores::where('id', $alerta->proveedor_id)->exists()) {
                 throw new \Exception("El proveedor no existe");
             }
-            if (!Producto::where('id', $alerta->producto_id)->exists()) {
+            // Solo validar producto_id si tipoMensaje es "Alerta de producto"
+            if ($alerta->tipoMensaje === 'Alerta de producto' && !Producto::where('id', $alerta->producto_id)->exists()) {
                 throw new \Exception("El producto no existe");
             }
         });

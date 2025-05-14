@@ -15,13 +15,19 @@ class AlertaController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'tipoMensaje' => 'required|string',
+        $rules = [
+            'tipoMensaje' => 'required|string|in:Alerta de producto,Alerta de proveedor',
             'fecha' => 'required|date',
             'estadoProducto' => 'required|string',
             'proveedor_id' => 'required|exists:proveedores,id',
-            'producto_id' => 'required|exists:productos,id',
-        ]);
+        ];
+
+        // Añadir validación de producto_id solo si tipoMensaje es "Alerta de producto"
+        if ($request->input('tipoMensaje') === 'Alerta de producto') {
+            $rules['producto_id'] = 'required|exists:productos,id';
+        }
+
+        $request->validate($rules);
 
         $alerta = Alerta::create($request->all());
         return response()->json($alerta, 201);
@@ -31,13 +37,19 @@ class AlertaController extends Controller
     {
         $alerta = Alerta::findOrFail($id);
 
-        $request->validate([
-            'tipoMensaje' => 'string',
+        $rules = [
+            'tipoMensaje' => 'string|in:Alerta de producto,Alerta de proveedor',
             'fecha' => 'date',
             'estadoProducto' => 'string',
             'proveedor_id' => 'exists:proveedores,id',
-            'producto_id' => 'exists:productos,id',
-        ]);
+        ];
+
+        // Añadir validación de producto_id solo si tipoMensaje es "Alerta de producto"
+        if ($request->input('tipoMensaje') === 'Alerta de producto') {
+            $rules['producto_id'] = 'required|exists:productos,id';
+        }
+
+        $request->validate($rules);
 
         $alerta->update($request->all());
         return response()->json($alerta);
