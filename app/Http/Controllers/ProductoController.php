@@ -216,6 +216,52 @@ class ProductoController extends Controller
     }
 
     /**
+     * Reducir el stock de un producto
+     */
+    public function reduceStock(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'cantidad' => 'required|integer|min:1'
+        ]);
+
+        if ($validator->fails()) {
+            return $this->validationErrorResponse($validator->errors());
+        }
+
+        try {
+            $producto = Producto::find($id);
+
+            if (!$producto) {
+                return $this->notFoundResponse('Producto no encontrado');
+            }
+
+            if ($producto->stock < $request->cantidad) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Stock insuficiente',
+                    'stock_disponible' => $producto->stock
+                ], 400);
+            }
+
+            // Reducir el stock
+            $producto->stock -= $request->cantidad;
+            $producto->save();
+
+            // Manejar alertas de stock bajo
+            $this->handleStockAlerts($producto);
+
+            return $this->successResponse(
+                $producto->fresh(['alerta', 'usuario']),
+                'Stock actualizado exitosamente'
+            );
+
+        } catch (\Exception $e) {
+            Log::error('Error al reducir stock: ' . $e->getMessage());
+            return $this->errorResponse('Error al reducir el stock', $e->getMessage());
+        }
+    }
+
+    /**
      * Manejo de alertas según stock
      */
     protected function handleStockAlerts(Producto $producto)

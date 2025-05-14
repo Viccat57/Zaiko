@@ -14,21 +14,21 @@ class Producto extends Model
         'descripcion',
         'precio',
         'stock',
-        'idUsuario',  // Asegúrate que esté aquí
+        'id_usuario',  // Asegúrate que esté aquí
         'idAlerta'
     ];
-    
+
     // Haz las relaciones opcionales
     public function usuario()
     {
-        return $this->belongsTo(User::class, 'idUsuario')->withDefault();
+        return $this->belongsTo(User::class, 'id_usuario')->withDefault();
     }
-    
+
     public function alerta()
     {
         return $this->belongsTo(Alerta::class, 'idAlerta')->withDefault();
     }
-    
+
     public function verificarStock()
     {
         if ($this->stock < 10) {
@@ -42,7 +42,17 @@ class Producto extends Model
             }
         }
     }
-    
+
+    public function reducirStock($cantidad)
+    {
+        if ($this->stock < $cantidad) {
+            throw new \Exception('Stock insuficiente');
+        }
+
+        $this->stock -= $cantidad;
+        return $this->save();
+    }
+
     protected function generarAlerta()
     {
         // Solo crear alerta si no existe una
@@ -52,7 +62,7 @@ class Producto extends Model
                 'fecha' => now(),
                 'estadoProducto' => 'Stock crítico: ' . $this->stock . ' unidades'
             ]);
-    
+
             $this->idAlerta = $alerta->id;
             $this->save();
         }

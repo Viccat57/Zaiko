@@ -26,10 +26,10 @@ Route::delete('/proveedores/{id}', [ProveedoresController::class, 'destroy']);
 
 // Rutas para Ventas
 Route::get('/ventas', [VentaController::class, 'index']);
-Route::get('/ventas/{id}', [VentaController::class, 'show']);
+Route::get('/ventas/{id_venta}', [VentaController::class, 'show']);
 Route::post('/ventas', [VentaController::class, 'store']);
-Route::put('/ventas/{id}', [VentaController::class, 'update']);
-Route::delete('/ventas/{id}', [VentaController::class, 'destroy']);
+Route::put('/ventas/{id_venta}', [VentaController::class, 'update']);
+Route::delete('/ventas/{id_venta}', [VentaController::class, 'destroy']);
 
 // Rutas adicionales útiles para ventas
 Route::get('/ventas/por-fecha/{fecha}', [VentaController::class, 'ventasPorFecha']);
@@ -39,8 +39,11 @@ Route::get('/ventas/estadisticas/diarias', [VentaController::class, 'estadistica
 Route::get('/ventas/estadisticas/mensuales', [VentaController::class, 'estadisticasMensuales']);
 
 
-Route::get('/detalle-ventas/{idVenta}', [DetalleVentaProductoController::class, 'show']);
+Route::get('/detalle-ventas/{id_venta}', [DetalleVentaProductoController::class, 'show']);
+Route::post('/detalle-ventas', [DetalleVentaProductoController::class, 'store']);
+
 Route::get('/productos/multiple', [ProductoController::class, 'getMultiple']);
+Route::patch('/productos/{id}/reduce-stock', [ProductoController::class, 'reduceStock']);
 
 
 Route::get('/health', function() {

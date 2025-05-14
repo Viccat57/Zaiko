@@ -23,7 +23,7 @@ class DetalleVentaSeeder extends Seeder
                 $subtotal = $producto->precio; // Aquí puedes simular cantidades si quieres
 
                 DetalleVentaProducto::create([
-                    'idVenta' => $venta->idVenta,
+                    'id_venta' => $venta->id_venta,
                     'idProducto' => $producto->id,
                     'subtotal' => $subtotal,
                 ]);

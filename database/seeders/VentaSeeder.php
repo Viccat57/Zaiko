@@ -15,7 +15,7 @@ class VentaSeeder extends Seeder
             Venta::create([
                 'fecha' => Carbon::now()->subDays($i), // Venta de hace X días
                 'total' => 0, // Se actualiza luego con el detalle
-                'idUsuario' => 2,
+                'id_user' => 2,
             ]);
         }
     }

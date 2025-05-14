@@ -17,8 +17,7 @@ class VentaController extends Controller
         $request->validate([
             'fecha' => 'required|date',
             'total' => 'required|numeric',
-            'idProducto' => 'required|exists:productos,id',
-            'idUsuario' => 'required|exists:usuarios,id'
+            'id_user' => 'required|exists:users,id'
         ]);
 
         $venta = Venta::create($request->all());
